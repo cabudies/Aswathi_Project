@@ -12,13 +12,7 @@ class Subjects(models.Model):
 
     def __str__(self) -> str:
         return self.name
-
-class AcademicYear(models.Model):
-    year = models.CharField(default="2020-21",blank=False,max_length=20)
     
-    def __str__(self) -> str:
-        return self.year
-
 class Degree(models.Model):
     name = models.CharField(max_length=40, default="", blank=False)
     duration = models.IntegerField(default=1,blank=False)

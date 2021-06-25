@@ -5,25 +5,25 @@ def upload_profile_pic(instance,filenname):
     return 'student_profile/{0}/of_/{1}'.format(instance.date_of_birth,filenname)
 
 class Student(models.Model):  
-    date_of_birth = models.DateField(blank=False,default="")
-    profile_pic = models.FileField(upload_to=upload_profile_pic,default="")
+    date_of_birth = models.DateField(blank=True,default="1999-07-09")
+    profile_pic = models.FileField(upload_to=upload_profile_pic,default="",blank=True)
     user = models.OneToOneField(CustomUser,on_delete=models.CASCADE,primary_key=True) 
-    semester =  models.IntegerField(default=1,blank=False)
-    degree = models.ForeignKey('course.Degree',on_delete=models.CASCADE,default="")
+    semester =  models.IntegerField(default=1,blank=True)
+    degree = models.ForeignKey('course.Degree',on_delete=models.CASCADE,default="",null=True,blank=True)
     payment_approved = models.BooleanField(default=False,blank=True)
     student_approved = models.BooleanField(default=False,blank=True)
-    academic_year = models.ForeignKey('course.AcademicYear',on_delete=models.CASCADE,default="")
+    academic_year = models.CharField(max_length=10,default="2020-21",blank=True)
     admission_id  = models.CharField(max_length=100,blank=True,default="")
 
     def approve(self):
-        self.approved=True
+        self.student_approved=True
         return self
 
     def save(self ,*args , **kwargs):
         roll_no = 1
-        year = str(self.academic_year.year).replace('-',"")
+        year_ = str(self.academic_year).replace("-", "")
         string = "000"
-        self.admission_id = year+string+str(roll_no)
+        self.admission_id = year_+string+str(roll_no)
         roll_no+=1
         super().save(*args , **kwargs)
         

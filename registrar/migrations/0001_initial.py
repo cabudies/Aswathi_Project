@@ -3,7 +3,7 @@
 from django.conf import settings
 from django.db import migrations, models
 import django.db.models.deletion
-import teacher.models
+import registrar.models
 
 
 class Migration(migrations.Migration):
@@ -16,9 +16,9 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
-            name='Teacher',
+            name='Registrar',
             fields=[
-                ('profile_pic', models.FileField(upload_to=teacher.models.upload_profile)),
+                ('profile_pic', models.FileField(upload_to=registrar.models.upload_profile)),
                 ('user', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, primary_key=True, serialize=False, to=settings.AUTH_USER_MODEL)),
             ],
         ),

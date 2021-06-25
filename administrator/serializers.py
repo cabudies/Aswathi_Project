@@ -37,13 +37,13 @@ class UserSerializer(serializers.ModelSerializer):
     state = serializers.CharField(required=True)
     country = serializers.CharField(required=True)
     phone = serializers.IntegerField(required=True)
-    role = serializers.CharField(required=True)  
+    role = serializers.CharField(required=False)  
 
 
     class Meta:
         model = models.CustomUser
         fields = ('email', 'first_name', 'password', 'last_name', 'address',
-            'city', 'state', 'country', 'phone', 'img','role')
+            'city', 'state', 'country', 'phone','role')
         extra_kwargs = {'password': {'write_only': True}}
 
     def create(self, validated_data):
