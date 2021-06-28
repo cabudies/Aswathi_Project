@@ -1,12 +1,12 @@
 from django.contrib import admin
-from .models import Registrar
-class RegistrarModelAdmin(admin.ModelAdmin):
+from .models import Hr
+class HrModelAdmin(admin.ModelAdmin):
     class Meta:
-        model = Registrar
+        model = Hr
         list_display = ('profile_pic','name')
 
         def get_name(self,obj):
             return self.user.first_name
         get_name.short_description = "Name"
 
-admin.site.register(Registrar , RegistrarModelAdmin)
+admin.site.register(Hr , HrModelAdmin)

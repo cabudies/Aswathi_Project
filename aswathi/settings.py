@@ -37,6 +37,8 @@ INSTALLED_APPS = [
     'teacher.apps.TeacherConfig',
     'accountant.apps.AccountantConfig',
     'registrar.apps.RegistrarConfig',
+    'hod.apps.HodConfig',
+    'hr.apps.HrConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -140,6 +142,7 @@ AUTH_USER_MODEL = 'administrator.CustomUser'
 #Rest permissions
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
+         'rest_framework.permissions.AllowAny',
          'rest_framework.permissions.IsAuthenticated',
          'rest_framework.permissions.IsAdminUser',
     ],
@@ -147,7 +150,7 @@ REST_FRAMEWORK = {
          'rest_framework_simplejwt.authentication.JWTAuthentication',
     )
 }
-
+    
 
 
 # JWT Toekn setting

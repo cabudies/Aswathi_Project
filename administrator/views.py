@@ -22,14 +22,15 @@ from drf_yasg.utils import swagger_auto_schema
 from rest_framework_simplejwt.tokens import RefreshToken
 
 
+
 class LoginTokenView(TokenObtainPairView):
     permission_classes = (AllowAny,)
     serializer_class = MyTokenObtainPairSerializer 
 
-@swagger_auto_schema(methods=['POST',], request_body=UserSerializer)
+@swagger_auto_schema(methods=['POST',], request_body=serializers.UserSerializer)
 @csrf_exempt
-@permission_classes([AllowAny,])
 @api_view(['POST'])
+@permission_classes([AllowAny,])
 def createuser(request):
     serializer = serializers.UserSerializer(data=request.data)
     if serializer.is_valid():

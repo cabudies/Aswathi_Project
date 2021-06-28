@@ -14,7 +14,7 @@ class Payment(models.Model):
     amount_paid = models.FloatField(default=None,blank=True)
     trn_id  = uuid.uuid4()
     txn_id = models.CharField(max_length=100,default=trn_id,blank=False)
-    l = [True,False]
+    l = ["pending","success"]
     status = random.choice(l)
     status = models.CharField(default=status,blank=False,max_length=10)
     done_at = models.DateTimeField(auto_now_add=True)

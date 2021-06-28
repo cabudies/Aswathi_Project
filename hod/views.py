@@ -8,6 +8,6 @@ from rest_framework_simplejwt.views import TokenObtainPairView
 
 
 
-class TeacherLoginView(TokenObtainPairView):
+class HodLoginView(TokenObtainPairView):
     permission_classes  = [AllowAny,]
-    serializer_class = serializers.TeacherObtainPairSerializer
+    serializer_class = serializers.HodObtainPairSerializer

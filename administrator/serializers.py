@@ -19,10 +19,9 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
         data = super(MyTokenObtainPairSerializer, self).validate(attrs)
         user_model = get_user_model()
         obj = user_model.objects.get(email = self.user.email)
-        is_admin = obj.is_superuser
         name = obj.first_name + obj.last_name
         data.update({'user': self.user.email})
-        data.update({'is_admin': is_admin})
+        data.update({'role':obj.role})
         data.update({'name': name})
         return data
 

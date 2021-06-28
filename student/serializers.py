@@ -22,13 +22,17 @@ class StudentObtainPairSerializer(TokenObtainPairSerializer):
         data = super(StudentObtainPairSerializer, self).validate(attrs)
         user_model = get_user_model()
         obj = user_model.objects.get(email = self.user.email)
-        student = Student.objects.get(user_id=obj.id)
-        if student.student_approved == True:
-            name = obj.first_name + obj.last_name
-            data.update({'user': self.user.email})
-            data.update({'role': obj.role})
-            data.update({'name': name})
-            return data
-        else:
-            data={'Message':'You can not login , please contact registrar.'}
-            return data
+        try:
+            student = Student.objects.get(user_id=obj.id)
+            if student.student_approved == True:
+                name = obj.first_name + obj.last_name
+                data.update({'user': self.user.email})
+                data.update({'role': obj.role})
+                data.update({'name': name})
+                return data
+            else:
+                data={'Message':'You can not login , please contact registrar.'}
+                return data
+        except Student.DoesNotExist:
+            msg = {"message":"You are not an Student"}
+            return msg
