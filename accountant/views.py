@@ -9,7 +9,7 @@ from .models import Payment
 from rest_framework.decorators import api_view , permission_classes
 from rest_framework import status
 from student.models import Student
-
+from rest_framework.pagination import PageNumberPagination
 
 class AccountantLoginView(TokenObtainPairView):
     permission_classes  = [AllowAny,]
@@ -39,8 +39,11 @@ def approve_payment(request):
 @api_view(['GET'])
 @permission_classes([AllowAny,])
 def cash_payments(request):
+    
     status_ = request.query_params.get('status_',None)
     if status_ is None:
+        paginator = PageNumberPagination()
+        paginator.page_size = 10
         response_dict = {
             'txn_ids':[],
             'status':[],
@@ -57,6 +60,8 @@ def cash_payments(request):
             response_dict['emails'].append(payment.student.user.email)
         return Response(response_dict,status= status.HTTP_200_OK)
     elif status_=="success":
+        paginator = PageNumberPagination()
+        paginator.page_size = 10
         response_dict = {
             'txn_ids':[],
             'status':[],
@@ -73,6 +78,8 @@ def cash_payments(request):
             response_dict['emails'].append(payment.student.user.email)
         return Response(response_dict,status= status.HTTP_200_OK)
     elif status_ == "pending":
+        paginator = PageNumberPagination()
+        paginator.page_size = 10
         response_dict = {
             'txn_ids':[],
             'status':[],
