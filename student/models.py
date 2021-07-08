@@ -14,17 +14,18 @@ class Student(models.Model):
     student_approved = models.BooleanField(default=False,blank=True)
     academic_year = models.CharField(max_length=10,default="2020-21",blank=True)
     admission_id  = models.CharField(max_length=100,blank=True,default="")
+    roll_no = models.IntegerField(default=1,editable=False)
 
     def approve(self):
         self.student_approved=True
         return self
-
+  
     def save(self ,*args , **kwargs):
-        roll_no = 1
+        
+        self.roll_no+=1
         year_ = str(self.academic_year).replace("-", "")
         string = "000"
-        self.admission_id = year_+string+str(roll_no)
-        roll_no+=1
+        self.admission_id = year_+string+str(self.roll_no)
         super().save(*args , **kwargs)
         
 

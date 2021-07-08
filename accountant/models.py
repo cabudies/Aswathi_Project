@@ -4,7 +4,7 @@ from django.utils import translation
 import uuid
 import random
 from student import models as stumodels
-from course.models import Degree
+from course.models import Degree , Fee
 class Payment(models.Model):
     methods = (
         ('Online','Online'),
@@ -13,13 +13,16 @@ class Payment(models.Model):
     payment_method = models.CharField(choices=methods,max_length=10)
     amount_paid = models.FloatField(default=None,blank=True)
     trn_id  = uuid.uuid4()
-    txn_id = models.CharField(max_length=100,default=trn_id,blank=False)
+    txn_id = models.CharField(max_length=100,default=trn_id,blank=True)
     l = ["pending","success"]
     status = random.choice(l)
-    status = models.CharField(default=status,blank=False,max_length=10)
+    status = models.CharField(default=status,blank=True,max_length=10)
     done_at = models.DateTimeField(auto_now_add=True)
     student = models.ForeignKey(stumodels.Student,on_delete=models.CASCADE,default="")
-    course = models.ForeignKey(Degree,on_delete=models.CASCADE,default="")
+    course = models.ForeignKey(Degree,on_delete=models.CASCADE,default="",null=True)
+    fee = models.ForeignKey(Fee, on_delete=models.CASCADE,null=True)
+      
+    
 
     def __str__(self):
         return self.txn_id

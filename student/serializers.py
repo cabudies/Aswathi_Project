@@ -31,7 +31,7 @@ class StudentObtainPairSerializer(TokenObtainPairSerializer):
                 data.update({'name': name})
                 return data
             else:
-                data={'Message':'You can not login , please contact registrar.'}
+                data={'message':"You can not login , please contact registrar/administrator"}
                 return data
         except Student.DoesNotExist:
             msg = {"message":"You are not an Student"}

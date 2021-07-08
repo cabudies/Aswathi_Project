@@ -4,8 +4,8 @@ from . import views
 
 urlpatterns = [
     path('login/',views.AccountantLoginView.as_view(),name='login'),
+    path('all_transactions/',views.all_transactions,name='all_trans'),
     path('approve_payment/',views.approve_payment,name='approve-payment'),
-    path('cash_payement/',views.cash_payments,name='cash-payments'),
-    path('payment_details/',views.get_payment_details,name='cash-payments'),
+    path('add_cash/',views.add_cash,name='add-cash')
 
 ]

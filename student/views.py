@@ -21,29 +21,28 @@ from drf_yasg.utils import swagger_auto_schema
 from rest_framework_simplejwt.tokens import RefreshToken
 from .models import Student
 from .serializers import StudentObtainPairSerializer
-
-
-class StudentSignupView(CreateAPIView):
-    permission_classes = [AllowAny,]
-    serializer_class  = UserSerializer
-    queryset = CustomUser.objects.all()
-    
-
-    def create(self , request,*args , **kwargs):
-        request.data._mutable = True
-        request.data['role'] = 'student'
-        request.data._mutable = False
-        
-        serializer = self.get_serializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        self.perform_create(serializer)
-        user_obj = CustomUser.objects.get(email=request.data['email'])
-        student_obj = Student.objects.create(user=user_obj)
-        headers = self.get_success_headers(serializer.data)
-        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
-  
-
+from rest_framework import status
+from accountant.models import Payment
 
 class StudentLogin(TokenObtainPairView):
     permission_classes = (AllowAny,)
     serializer_class = StudentObtainPairSerializer 
+
+@api_view(['GET',])
+@permission_classes([AllowAny,])
+def get_details(request):
+    user_id = request.query_params.get('student_id')
+    student = Student.objects.get(user_id = user_id)
+    payments = Payment.objects.filter(student=student,payment_method='cash')
+    response_dict = {
+        'cash_transactions':[]
+    }
+    for payment in payments:
+        lst=[]
+        lst.append(payment.txn_id)
+        lst.append(payment.status)
+        lst.append(payment.amount_paid)  
+        lst.append(payment.student.admission_id)
+        lst.append(payment.student.user.email)
+        response_dict['cash_transactions'].append(lst)
+        return Response(response_dict,status=status.HTTP_201_CREATED)

@@ -18,6 +18,7 @@ class Degree(models.Model):
     duration = models.IntegerField(default=1,blank=False)
     total_semesters = models.IntegerField(default="")
     
+    
 
     def __str__(self):
         return self.name
@@ -46,3 +47,10 @@ class Material(models.Model):
     notes =  models.FileField(upload_to=get_material_notes_dir)
     file_class = models.ForeignKey(MyClass, on_delete=models.CASCADE)
 
+class Fee(models.Model):
+    fee_name = models.CharField(max_length=50,default='tuition_fee')
+    amount  =  models.IntegerField()
+    course =   models.ForeignKey(Degree, on_delete=models.DO_NOTHING)
+
+    def __str__(self):
+        return self.fee_name
