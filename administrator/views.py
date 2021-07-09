@@ -67,19 +67,17 @@ class ChangePasswordView(UpdateAPIView):
 @permission_classes([IsAuthenticated,])
 def approve(request):
     stu_id = request.data.get('admission_id')
-    print(stu_id.strip())
-    student = Student.objects.get(admission_id=stu_id.strip())
     if stu_id is not None:
         try:
             student = Student.objects.get(admission_id=stu_id)
-        # user = CustomUser.objects.get(id=student_id)
+        #   user = CustomUser.objects.get(id=student_id)
             student.student_approved = True
             student.save()
             print(student.student_approved)
-        # subject = "Login Credentials"
-        # message = 'Hello Your Login credentials your email'+user.email+"and your password is " + user.password
-        # recepient = str(user.email)
-        # send_mail(subject,message, EMAIL_HOST_USER, [recepient], fail_silently = False)
+        #   subject = "Login Credentials"
+        #   message = 'Hello Your Login credentials your email'+user.email+"and your password is " + user.password
+        #   recepient = str(user.email)
+        #   send_mail(subject,message, EMAIL_HOST_USER, [recepient], fail_silently = False)
             return Response({'message':"Student got approved and login credentials has been sent"},status=status.HTTP_202_ACCEPTED)
         except Student.DoesNotExist:
             return Response({"message":"student does not exists"},status=status.HTTP_400_BAD_REQUEST)

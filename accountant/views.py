@@ -10,7 +10,7 @@ from rest_framework.decorators import api_view , permission_classes
 from rest_framework import status
 from student.models import Student
 from rest_framework.pagination import PageNumberPagination
-from course.models import Fee
+from course.models import Fee , Degree
 
 class AccountantLoginView(TokenObtainPairView):
     permission_classes  = [AllowAny,]
@@ -102,30 +102,35 @@ def all_transactions(request):
             dct['student_details']['email']=(payment.student.user.email)
             dct['course_details']['degree'] = payment.student.degree.name
             dct['course_details']['payment_method'] = payment.payment_method
+            dct['course_details']['payment_status'] = payment.status
             response_dict['all_transactions'].append(dct)
         return Response(response_dict,status=status.HTTP_202_ACCEPTED)
     elif student_id is not None:
         paginator = PageNumberPagination()
         paginator.page_size = 10
         response_dict = { 
-                'cash_transactions':[],}
-        
-        payments = Payment.objects.filter(student__user_id=student_id)
+                'all_transactions':[],}
+
+        student = Student.objects.get(admission_id=student_id)
+        payments = Payment.objects.filter(student=student)
         for payment in payments:
 
-            dct = { 'txn_id':1,
-                    'amount paid':3,
-                    'admission_id':8,
-                    'email':8,
+            dct = { 'student_details': {},
+                    'course_details':{}
+            
                   }
-
-            dct['txn_id']=(payment.txn_id)
-            dct['amount_paid']=(payment.amount_paid)
-            dct['admission_id']=payment.student.admission_id
-            dct['email']=(payment.student.user.email)
-            response_dict['cash_transactions'].append(dct)
+            payment.student.payment_approved=True
+            payment.student.save()
+            dct['course_details']['txn_id']=(payment.txn_id)
+            dct['course_details']['amount_paid']=(payment.amount_paid)
+            dct['course_details']['fee_type'] = payment.fee.fee_name
+            dct['student_details']['admission_id']=payment.student.admission_id
+            dct['student_details']['email']=(payment.student.user.email)
+            dct['course_details']['degree'] = payment.student.degree.name
+            dct['course_details']['payment_method'] = payment.payment_method
+            dct['course_details']['payment_status'] = payment.status
+            response_dict['all_transactions'].append(dct)
         return Response(response_dict,status=status.HTTP_202_ACCEPTED)
-
 
     else:
 
@@ -134,3 +139,17 @@ def all_transactions(request):
            "Message":"Not a valid query."
 
         },status=staus.HTTP_400_BAD_REQUEST)
+
+
+@api_view(["POST"])
+@permission_classes([IsAuthenticated,])
+def add_fee(request):
+    amount = request.data.get('amount')
+    fee_type = request.data.get('fee_type')
+    degree = request.data.get('degree')
+    try:
+        degree = Degree.objects.get(name=degree)
+        fee = Fee.objects.create(fee_name=fee_type,amount=amount,course=degree)
+        return Response({"message":'fee added for the given course'},status=status.HTTP_202_ACCEPTED)
+    except Degree.DoesNotExist:
+        return Response({"message":"Course does not exists."})
