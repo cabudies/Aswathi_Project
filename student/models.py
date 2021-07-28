@@ -29,3 +29,13 @@ class Student(models.Model):
 
     def __str__(self):
         return self.user.first_name+" "+self.user.last_name
+
+class StudentForm(models.Model):
+    name = models.CharField(max_length=100)
+    email = models.EmailField(max_length=70,unique=True)
+    phone = models.IntegerField(unique=True)
+    course_interested  = models.CharField(max_length=60)
+
+
+    def __str__(self):
+        return self.name
