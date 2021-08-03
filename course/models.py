@@ -2,16 +2,15 @@ from django.db import models
 from student.models import Student
 
 class Subjects(models.Model):
-    name = models.CharField(max_length=50,default="",blank=False)
+    name = models.CharField(max_length=50, default="", blank=False)
     credit = models.IntegerField(default=0)
     teacher = models.ForeignKey('teacher.Teacher',on_delete=models.CASCADE,default="")
-    
 
     def __str__(self) -> str:
         return self.name
     
 class Degree(models.Model):
-    name = models.CharField(max_length=40, default="", blank=False)
+    name = models.CharField(max_length=255, default="", blank=False)
     duration = models.IntegerField(default=1,blank=False)
     total_semesters = models.IntegerField(default="")
     

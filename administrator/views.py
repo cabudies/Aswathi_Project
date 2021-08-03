@@ -24,6 +24,10 @@ from aswathi.settings import EMAIL_HOST_USER
 from django.core.mail import send_mail
 from .models import CustomUser
 from student.models import Student
+from accountant.models import Accountant
+from registrar.models import Registrar
+from hr.models import Hr
+from hod.models import HeadOfDepartment
 
 class LoginTokenView(TokenObtainPairView):
     permission_classes = (AllowAny,)
@@ -86,10 +90,8 @@ class StudentSignupView(CreateAPIView):
     permission_classes = [AllowAny,]
     serializer_class  = UserSerializer
     queryset = CustomUser.objects.all()
-       
 
     def create(self , request,*args , **kwargs):
-       
         request.data['role'] = 'student'
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
@@ -98,3 +100,75 @@ class StudentSignupView(CreateAPIView):
         student_obj = Student.objects.create(user=user_obj)
         headers = self.get_success_headers(serializer.data)
         return Response({"message":"Student has been registered",'data':serializer.data}, status=status.HTTP_201_CREATED, headers=headers)
+
+
+
+class AccountantSignupView(CreateAPIView):
+    permission_classes = [AllowAny,]
+    serializer_class  = UserSerializer
+    queryset = CustomUser.objects.all()
+       
+
+    def create(self , request,*args , **kwargs):
+       
+        request.data['role'] = 'accountant'
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
+        user_obj = CustomUser.objects.get(email=request.data['email'])
+        student_obj = Accountant.objects.create(user=user_obj)
+        headers = self.get_success_headers(serializer.data)
+        return Response({"message":"Accountant has been created login credentials has been sent ",'data':serializer.data}, status=status.HTTP_201_CREATED, headers=headers)
+
+class RegistrarSignupView(CreateAPIView):
+    permission_classes = [AllowAny,]
+    serializer_class  = UserSerializer
+    queryset = CustomUser.objects.all()
+       
+
+    def create(self , request,*args , **kwargs):
+       
+        request.data['role'] = 'registrar'
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
+        user_obj = CustomUser.objects.get(email=request.data['email'])
+        student_obj = Registrar.objects.create(user=user_obj)
+        headers = self.get_success_headers(serializer.data)
+        return Response({"message":"Registrar has been created login credentials has been sent ",'data':serializer.data}, status=status.HTTP_201_CREATED, headers=headers)
+
+
+class HrSignupView(CreateAPIView):
+    permission_classes = [AllowAny,]
+    serializer_class  = UserSerializer
+    queryset = CustomUser.objects.all()
+       
+
+    def create(self , request,*args , **kwargs):
+       
+        request.data['role'] = 'hr'
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
+        user_obj = CustomUser.objects.get(email=request.data['email'])
+        student_obj = Hr.objects.create(user=user_obj)
+        headers = self.get_success_headers(serializer.data)
+        return Response({"message":"HR has been created login credentials has been sent ",'data':serializer.data}, status=status.HTTP_201_CREATED, headers=headers)
+
+
+class HodSignupView(CreateAPIView):
+    permission_classes = [AllowAny,]
+    serializer_class  = UserSerializer
+    queryset = CustomUser.objects.all()
+       
+
+    def create(self , request,*args , **kwargs):
+       
+        request.data['role'] = 'hod'
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
+        user_obj = CustomUser.objects.get(email=request.data['email'])
+        student_obj = HeadOfDepartment.objects.create(user=user_obj)
+        headers = self.get_success_headers(serializer.data)
+        return Response({"message":"HOD has been created login credentials has been sent ",'data':serializer.data}, status=status.HTTP_201_CREATED, headers=headers)

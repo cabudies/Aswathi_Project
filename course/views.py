@@ -1,23 +1,28 @@
 from django.shortcuts import render
-from . import serializers
-from rest_framework import generics
-from rest_framework.response import Response
-from rest_framework.permissions import AllowAny ,IsAuthenticated , IsAdminUser
-from rest_framework.views import APIView
-from rest_framework_simplejwt.views import TokenObtainPairView
-from .models import Payment
-from rest_framework.decorators import api_view , permission_classes
 from rest_framework import status
-from student.models import Student
-from rest_framework.pagination import PageNumberPagination
-from .models import Fee , Degree
+from rest_framework.generics import CreateAPIView , RetrieveAPIView
+from rest_framework.permissions import AllowAny
+from rest_framework.decorators import api_view , permission_classes
+from .models import Degree
+from . import serializers
+from rest_framework.response import Response
+  
 
 @api_view(['GET'])
-@permission_classes([IsAuthenticated,])
-def all_transactions(request):
-    return Response(
-        {
-            "message" : "Your payment was not successfull"
-        },
-        status = status.HTTP_202_ACCEPTED
-    )
+@permission_classes([AllowAny,])
+def CourseDetails(request):
+    name = request.query_params.get('name')
+    # print(name)
+    try:
+        degree = Degree.objects.get(name=name)
+        serializer = serializers.CourseSerializer(degree)
+        return Response(serializer.data,status=status.HTTP_202_ACCEPTED)
+    except:
+        return Response({"message": "This Course Does Not Exists"},status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['GET'])
+@permission_classes([AllowAny,])
+def CoursesList(request):
+    degree = Degree.objects.values_list('name', flat=True)
+    return Response({"courses": degree},status=status.HTTP_200_OK)
+

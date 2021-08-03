@@ -11,4 +11,5 @@ urlpatterns = [
     path('registrar/',include('registrar.urls')),
     path('hod/',include('hod.urls')),
     path('hr/',include('hr.urls')),
+    path('course/',include('course.urls')),
 ]

@@ -6,7 +6,7 @@ from rest_framework_jwt.settings import api_settings
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from django.contrib.auth import get_user_model   
 from rest_framework.response import Response
-from student.models import Student
+from student.models import Student , StudentForm
 
 
 
@@ -36,3 +36,22 @@ class StudentObtainPairSerializer(TokenObtainPairSerializer):
         except Student.DoesNotExist:
             msg = {"message":"You are not an Student"}
             return msg
+
+
+class StudentDetailSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = models.Student
+        exclude = ('payment_approved','student_approved',)
+
+
+class StudentFormSerializer(serializers.ModelSerializer):
+    name = serializers.CharField(required=True)
+    email = serializers.EmailField(required=True)
+    phone = serializers.IntegerField(required=True)
+    course_interested  = serializers.CharField(required=True)
+    
+
+    class Meta:
+        model = StudentForm
+        fields = '__all__'
