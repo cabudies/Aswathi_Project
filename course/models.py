@@ -1,9 +1,6 @@
 from django.db import models
 from student.models import Student
 
-
-
-
 class Subjects(models.Model):
     name = models.CharField(max_length=50,default="",blank=False)
     credit = models.IntegerField(default=0)
@@ -18,8 +15,6 @@ class Degree(models.Model):
     duration = models.IntegerField(default=1,blank=False)
     total_semesters = models.IntegerField(default="")
     
-    
-
     def __str__(self):
         return self.name
 
@@ -48,9 +43,13 @@ class Material(models.Model):
     file_class = models.ForeignKey(MyClass, on_delete=models.CASCADE)
 
 class Fee(models.Model):
-    fee_name = models.CharField(max_length=50,default='tuition_fee')
-    amount  =  models.IntegerField()
-    course =   models.ForeignKey(Degree, on_delete=models.DO_NOTHING)
+    fee_name = models.CharField(
+        max_length=50,
+        default='tuition_fee')
+    amount   = models.IntegerField()
+    course   = models.ForeignKey(
+        Degree, 
+        on_delete=models.DO_NOTHING)
 
     def __str__(self):
         return self.fee_name
