@@ -40,7 +40,7 @@ class Student(models.Model):
     )
 
     profile_pic = models.FileField(upload_to=upload_profile_pic,default="",blank=True)
-    user = models.OneToOneField(CustomUser,on_delete=models.CASCADE,primary_key=True) 
+    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE, primary_key=True) 
     semester = models.IntegerField(default=1,blank=True)
     degree = models.ForeignKey('course.Degree',on_delete=models.CASCADE,default="",null=True,blank=True)
     payment_approved = models.BooleanField(default=False,blank=True)
@@ -53,10 +53,10 @@ class Student(models.Model):
     ## passport information
     passport_number = models.CharField(max_length=200, default='')
     passport_issue_place = models.CharField(max_length=200, default='')
-    passport_expiry_date = models.DateTimeField(blank=True)
+    passport_expiry_date = models.DateField(blank=True, null=True)
     post_box_city = models.CharField(max_length=200, default='')
     emirates_id = models.CharField(max_length=200, default='')
-    emirates_id_expiry_date = models.DateTimeField(blank=True)
+    emirates_id_expiry_date = models.DateField(blank=True, null=True)
     ## application information
     academic_season = models.CharField(max_length=50, choices=academic_season_choices, default="")
     study_mode = models.CharField(max_length=50, choices=study_mode_choices, default="")
@@ -66,27 +66,27 @@ class Student(models.Model):
     emergency_contact_last_name = models.CharField(max_length=255, default='')
     emergency_contact_city = models.CharField(max_length=255, default='')
     emergency_contact_country = models.CharField(max_length=255, default='')
-    emergency_contact_mobile = models.PositiveIntegerField(blank=True)
-    emergency_contact_telephone_number = models.PositiveIntegerField(blank=True)
-    emergency_contact_email = models.EmailField(max_length=255, unique=True)
+    emergency_contact_mobile = models.PositiveIntegerField(blank=True, default=0)
+    emergency_contact_telephone_number = models.PositiveIntegerField(blank=True, default=0)
+    emergency_contact_email = models.EmailField(max_length=255, blank=True)
     emergency_contact_relationship = models.CharField(max_length=100, choices=emergency_contact_relation_choices, default="")
     ## education information
     high_school_name = models.CharField(max_length=255, default='')
     high_school_city = models.CharField(max_length=255, default='')
     high_school_country = models.CharField(max_length=255, default='')
-    high_school_academic_year = models.PositiveIntegerField(default=0)
-    high_school_percentage = models.DecimalField(blank=True)
+    high_school_academic_year = models.PositiveIntegerField(default=0, blank=True)
+    high_school_percentage = models.DecimalField(blank=True, max_digits=5, decimal_places=2, null=True)
     high_school_certificate_type = models.CharField(max_length=100, choices=high_school_certificate_choices, default="")
     ## transfer student information
-    transfer_college_name = models.CharField(max_length=255, default='')
-    transfer_college_city = models.CharField(max_length=255, default='')
-    transfer_college_country = models.CharField(max_length=255, default='')
-    transfer_college_academic_year = models.PositiveIntegerField(default=0)
-    transfer_college_percentage = models.DecimalField(blank=True)
+    transfer_college_name = models.CharField(max_length=255, default='', null=True, blank=True)
+    transfer_college_city = models.CharField(max_length=255, default='', null=True, blank=True)
+    transfer_college_country = models.CharField(max_length=255, default='', null=True, blank=True)
+    transfer_college_academic_year = models.PositiveIntegerField(default=0, blank=True, null=True)
+    transfer_college_percentage = models.DecimalField(blank=True, max_digits=5, decimal_places=2, null=True)
     ## english profienciey
     english_language_test_name = models.CharField(max_length=100, choices=english_language_test_name_choices, default="")
-    english_language_test_score = models.DecimalField(blank=True)
-    english_language_test_date = models.DateField(blank=True)
+    english_language_test_score = models.DecimalField(blank=True, max_digits=2, decimal_places=1, null=True)
+    english_language_test_date = models.DateField(blank=True, null=True)
     ## documentation checklist
     application_form_completed = models.CharField(max_length=100, choices=documentation_checklist_choices, default="")
     high_school_certificate = models.CharField(max_length=100, choices=documentation_checklist_choices, default="")
@@ -115,7 +115,7 @@ class StudentForm(models.Model):
     name = models.CharField(max_length=100)
     email = models.EmailField(max_length=70,unique=True)
     phone = models.IntegerField(unique=True)
-    course_interested  = models.CharField(max_length=60)
+    course_interested = models.CharField(max_length=60)
 
     def __str__(self):
         return self.name

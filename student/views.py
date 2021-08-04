@@ -77,17 +77,34 @@ class StudentForm(CreateAPIView):
             return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
 
 
-class StudentEditProfile(CreateAPIView):
+class StudentAddProfile(CreateAPIView):
     permission_classes = [AllowAny,]
     serializer_class = StudentDetailSerializer
     queryset = Student.objects.all()
 
     def create(self , request,*args , **kwargs):
-        request.data['user'] = request.user
+        # request.data['user'] = request.user
         serializer = self.get_serializer(data=request.data)
         
         if serializer.is_valid():
             self.perform_create(serializer)
+            # self.perform_update(serializer)
+            return Response({'message':'details updated',}, status=status.HTTP_201_CREATED,)
+        else:
+            return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
+
+class StudentEditProfile(UpdateAPIView):
+    permission_classes = [AllowAny,]
+    serializer_class = StudentDetailSerializer
+    queryset = Student.objects.all()
+
+    def create(self , request,*args , **kwargs):
+        # request.data['user'] = request.user
+        serializer = self.get_serializer(data=request.data)
+        
+        if serializer.is_valid():
+            # self.perform_create(serializer)
+            self.perform_update(serializer)
             return Response({'message':'details updated',}, status=status.HTTP_201_CREATED,)
         else:
             return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)

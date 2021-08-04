@@ -1,3 +1,5 @@
+from course.models import Degree
+from administrator.models import CustomUser
 from rest_framework import serializers
 from . import models
 from django.contrib.auth import authenticate
@@ -39,6 +41,12 @@ class StudentObtainPairSerializer(TokenObtainPairSerializer):
 
 
 class StudentDetailSerializer(serializers.ModelSerializer):
+    user = serializers.SlugRelatedField(
+        queryset=CustomUser.objects.all(),
+        slug_field='email')
+    degree = serializers.SlugRelatedField(
+        queryset=Degree.objects.all(),
+        slug_field='name')
 
     class Meta:
         model = models.Student

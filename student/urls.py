@@ -6,5 +6,6 @@ urlpatterns = [
     path('get_details/',views.get_details,name='get-cash-trans'),
     path('student_details/',views.student_details,name='student_details'),
     path('student_form/',views.StudentForm.as_view(),name = 'student_form'),
-    path('add_details/',views.StudentEditProfile.as_view(),name = 'student_adding_details'),
+    path('add_details/',views.StudentAddProfile.as_view(),name = 'student_add_details'),
+    path('update_details/',views.StudentEditProfile.as_view(),name = 'student_update_details'),
 ]     
