@@ -21,7 +21,7 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
         obj = user_model.objects.get(email = self.user.email)
         name = obj.first_name + obj.last_name
         data.update({'user': self.user.email})
-        data.update({'role':obj.role})
+        data.update({'role': obj.role})
         data.update({'name': name})
         return data
 

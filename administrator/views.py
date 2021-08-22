@@ -23,7 +23,7 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from aswathi.settings import EMAIL_HOST_USER
 from django.core.mail import send_mail
 from .models import CustomUser
-from student.models import Student
+from student.models import Student, StudentForm
 from accountant.models import Accountant
 from registrar.models import Registrar
 from hr.models import Hr
@@ -45,6 +45,14 @@ def createuser(request):
     else:
         return Response(serializer.errors,status=status.HTTP_205_RESET_CONTENT)
 
+@api_view(["GET",])
+@permission_classes([AllowAny,])
+def view_student_forms(request):
+    try:
+        details = StudentForm.objects.all()
+        return Response({'message':"Student details found.", 'list': details},status=status.HTTP_202_ACCEPTED)
+    except Student.DoesNotExist:
+        return Response({"message":"student does not exists", 'list': []},status=status.HTTP_400_BAD_REQUEST)
 
 
 

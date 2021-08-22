@@ -38,6 +38,10 @@ class Student(models.Model):
         ('submitted', 'Submitted'), ('missing', 'Missing'),
         ('not_applicable', 'Not Applicable')
     )
+    marital_status_choices = (
+        ('married', 'Married'), ('unmarried', 'Unmarried'),
+        ('divorced', 'Divorced')
+    )
 
     profile_pic = models.FileField(upload_to=upload_profile_pic,default="",blank=True)
     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE, primary_key=True) 
@@ -45,9 +49,11 @@ class Student(models.Model):
     degree = models.ForeignKey('course.Degree',on_delete=models.CASCADE,default="",null=True,blank=True)
     payment_approved = models.BooleanField(default=False,blank=True)
     student_approved = models.BooleanField(default=False,blank=True)
-    academic_year = models.CharField(max_length=10,default="2020-21",blank=True)
     admission_id  = models.CharField(max_length=100,blank=True,default="")
     ## personal information
+    marital_status = models.CharField(max_length=255, choices=marital_status_choices, default="")
+    home_telephone = models.IntegerField(null=True)
+    post_box = models.CharField(max_length=255, blank=True)
     date_of_birth = models.DateField(blank=True, default="1999-07-09")
     birth_place = models.CharField(max_length=255, blank=True, verbose_name='Name of the city where you were born')
     ## passport information
@@ -61,6 +67,8 @@ class Student(models.Model):
     academic_season = models.CharField(max_length=50, choices=academic_season_choices, default="")
     study_mode = models.CharField(max_length=50, choices=study_mode_choices, default="")
     apply_as = models.CharField(max_length=50, choices=apply_as_choices, default="")
+    academic_year = models.CharField(max_length=20,default="2020-21",blank=True)
+    academic_details = models.CharField(max_length=500,default="",blank=True)
     ## emergency information
     emergency_contact_first_name = models.CharField(max_length=255, default='')
     emergency_contact_last_name = models.CharField(max_length=255, default='')

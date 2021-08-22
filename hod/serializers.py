@@ -1,5 +1,16 @@
+from django.db.models import fields
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from django.contrib.auth import get_user_model
+from course.models import MyClass
+from administrator.models import CustomUser
+from rest_framework import serializers
+from . import models
+from django.contrib.auth import authenticate
+from django.contrib.auth.models import update_last_login
+from rest_framework_jwt.settings import api_settings
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+from django.contrib.auth import get_user_model   
+from rest_framework.response import Response
 
 
 class HodObtainPairSerializer(TokenObtainPairSerializer):
@@ -23,4 +34,32 @@ class HodObtainPairSerializer(TokenObtainPairSerializer):
         else:
             msg = {'message':'You are not hod can not login'}
             return msg
-        
+
+class EditHodProfileSerializer(serializers.ModelSerializer):
+    user = serializers.SlugRelatedField(
+        queryset=CustomUser.objects.all(),
+        slug_field='email')
+    classes = serializers.SlugRelatedField(
+        queryset=MyClass.objects.all(),
+        many=True,
+        slug_field='name')
+
+    class Meta:
+        model = models.HeadOfDepartment
+        fields = ('user', 'classes', )
+
+class ViewHodProfileSerializer(serializers.ModelSerializer):
+    user = serializers.SlugRelatedField(
+        queryset=CustomUser.objects.all(),
+        slug_field='email')
+    classes = serializers.SlugRelatedField(
+        queryset=MyClass.objects.all(),
+        many=True,
+        slug_field='name')
+
+    class Meta:
+        model = models.HeadOfDepartment
+        fields = ('user', 'classes')
+
+
+

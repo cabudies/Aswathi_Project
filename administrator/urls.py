@@ -13,5 +13,6 @@ urlpatterns = [
     path('logout/', views.LogoutView.as_view(), name='blacklist-token'),
     path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('approve/', views.approve, name='approve-student'),
+    path('view_student_forms/', views.view_student_forms, name='view_student_forms'),
     path('forgetpassword/<int:pk>',views.ChangePasswordView.as_view(),name='forget-password')
 ]
