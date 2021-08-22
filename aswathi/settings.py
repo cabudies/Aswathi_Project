@@ -23,9 +23,14 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'hgi0x+drq@2j$-9r_dvd%5&$(jm&knvn9zan8_#&$$3k&6x4oh'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+# DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    'https://ieti-project.herokuapp.com/',
+    '127.0.0.1',
+    'localhost'
+]
 
 
 
