@@ -29,7 +29,8 @@ DEBUG = False
 ALLOWED_HOSTS = [
     'https://ieti-project.herokuapp.com/',
     '127.0.0.1',
-    'localhost'
+    'localhost',
+    '*'
 ]
 
 
